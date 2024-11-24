@@ -7,7 +7,13 @@ set(RAYLIB_PATH ${PROJECT_SOURCE_DIR}/ext/raylib-5.5/)
 set(SOURCE_FILES)
 
 include_directories(${PROJECT_SOURCE_DIR}/src/ ${RAYLIB_PATH}/include/)
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp
+        src/Vector2.h
+        src/Object.cpp
+        src/Object.h
+        src/SpaceConvert.cpp
+        src/SpaceConvert.h
+        src/SpaceConvert.cpp)
 
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} ${RAYLIB_PATH}/lib/libraylib-mac.a
