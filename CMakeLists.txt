@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/)
 
 set(RAYLIB_PATH ${PROJECT_SOURCE_DIR}/ext/raylib-5.5/)
-set(SOURCE_FILES src/main.cpp
+set(SOURCE_FILES src/Main.cpp
         src/Core/Math/Vector2.h
         src/Core/Object.h
         src/Core/Object.cpp
