@@ -4,16 +4,16 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/)
 
 set(RAYLIB_PATH ${PROJECT_SOURCE_DIR}/ext/raylib-5.5/)
-set(SOURCE_FILES)
+set(SOURCE_FILES src/main.cpp
+        src/Vector2.h
+        src/Object.h
+        src/Object.cpp
+        src/SpaceConvert.h
+        src/SpaceConvert.cpp
+)
 
 include_directories(${PROJECT_SOURCE_DIR}/src/ ${RAYLIB_PATH}/include/)
-add_executable(${PROJECT_NAME} src/main.cpp
-        src/Vector2.h
-        src/Object.cpp
-        src/Object.h
-        src/SpaceConvert.cpp
-        src/SpaceConvert.h
-        src/SpaceConvert.cpp)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} ${RAYLIB_PATH}/lib/libraylib-mac.a
@@ -30,4 +30,5 @@ else ()
             shell32.lib)
 endif ()
 
-# file(COPY ${PROJECT_SOURCE_DIR}/res/ DESTINATION ${PROJECT_SOURCE_DIR}/bin/res/)
+file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/res)
+file(COPY ${PROJECT_SOURCE_DIR}/res/ DESTINATION ${PROJECT_SOURCE_DIR}/bin/res/)

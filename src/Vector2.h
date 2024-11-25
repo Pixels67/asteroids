@@ -10,6 +10,26 @@ struct Vec2 {
 
     Vec2() : x(0), y(0) {}
     Vec2(T x, T y) : x(x), y(y) {}
+    Vec2(const Vec2& other) {
+        this->x = other.x;
+        this->y = other.y;
+    }
+
+    Vec2& operator=(const Vec2& other) = default;
+
+    Vec2(Vec2&& other) noexcept {
+        this->x = std::move(other.x);
+        this->y = std::move(other.y);
+        other.~Vec2();
+        return *this;
+    }
+
+    Vec2& operator=(Vec2&& other)  noexcept {
+        this->x = std::move(other.x);
+        this->y = std::move(other.y);
+        other.~Vec2();
+        return *this;
+    };
 
 #pragma region Utility Methods
 
@@ -31,7 +51,7 @@ struct Vec2 {
     }
 
     [[nodiscard]] Vector2 ToRaylibVector() const {
-        return Vector2(x, y);
+        return Vector2(static_cast<float>(x), static_cast<float>(y));
     }
 
 #pragma endregion Utility Methods
@@ -47,61 +67,61 @@ struct Vec2 {
         return Vec2(-x, -y);
     }
 
-    Vec2& operator+=(const Vec2& rhs) {
-        x += rhs.x; y += rhs.y;
+    Vec2& operator+=(const Vec2& other) {
+        x += other.x; y += other.y;
         return *this;
     }
 
-    Vec2& operator-=(const Vec2& rhs) {
-        x -= rhs.x; y -= rhs.y;
+    Vec2& operator-=(const Vec2& other) {
+        x -= other.x; y -= other.y;
         return *this;
     }
 
-    Vec2& operator*=(const Vec2& rhs) {
-        x *= rhs.x; y *= rhs.y;
+    Vec2& operator*=(const Vec2& other) {
+        x *= other.x; y *= other.y;
         return *this;
     }
 
-    Vec2& operator/=(const Vec2& rhs) {
-        x /= rhs.x; y /= rhs.y;
+    Vec2& operator/=(const Vec2& other) {
+        x /= other.x; y /= other.y;
         return *this;
     }
 
-    Vec2& operator*=(const T rhs) {
-        x *= rhs; y *= rhs;
+    Vec2& operator*=(const T other) {
+        x *= other; y *= other;
         return *this;
     }
 
-    Vec2& operator/=(const T rhs) {
-        x /= rhs; y /= rhs;
+    Vec2& operator/=(const T other) {
+        x /= other; y /= other;
         return *this;
     }
 
 #pragma endregion Unary Arithmetic
 
 #pragma region Binary Arithmetic
-    Vec2 operator+(const Vec2& rhs) const {
-        return Vec2(x + rhs.x, y + rhs.y);
+    Vec2 operator+(const Vec2& other) const {
+        return Vec2(x + other.x, y + other.y);
     }
 
-    Vec2 operator-(const Vec2& rhs) const {
-        return Vec2(x - rhs.x, y - rhs.y);
+    Vec2 operator-(const Vec2& other) const {
+        return Vec2(x - other.x, y - other.y);
     }
 
-    Vec2 operator*(const Vec2& rhs) const {
-        return Vec2(x * rhs.x, y * rhs.y);
+    Vec2 operator*(const Vec2& other) const {
+        return Vec2(x * other.x, y * other.y);
     }
 
-    Vec2 operator/(const Vec2& rhs) const {
-        return Vec2(x / rhs.x, y / rhs.y);
+    Vec2 operator/(const Vec2& other) const {
+        return Vec2(x / other.x, y / other.y);
     }
 
-    Vec2 operator*(const T rhs) const {
-        return Vec2(x * rhs, y * rhs);
+    Vec2 operator*(const T other) const {
+        return Vec2(x * other, y * other);
     }
 
-    Vec2 operator/(const T rhs) const {
-        return Vec2(x / rhs, y / rhs);
+    Vec2 operator/(const T other) const {
+        return Vec2(x / other, y / other);
     }
 
 #pragma endregion Binary Arithmetic

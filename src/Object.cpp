@@ -9,11 +9,15 @@ Object::Object(const Texture2D &sprite)
 {}
 
 void Object::Move(const Vec2F translation) {
-    position += translation;
+    this->position += translation;
 }
 
 void Object::Rotate(const float rotation) {
     this->rotation += rotation;
+}
+
+void Object::Scale(const float scaleFactor) {
+    this->scale *= scaleFactor;
 }
 
 Spaceship::Spaceship(const Texture2D &sprite)
@@ -21,14 +25,29 @@ Spaceship::Spaceship(const Texture2D &sprite)
 
 void Spaceship::Draw() {
     const Vec2I spriteSize = {sprite.width, sprite.height};
-    const Vec2I objectSize = {spriteSize * static_cast<int>(scale)};
-    const Vec2I screenPoint = SpaceConvert::WorldToCenteredScreenPoint(position, objectSize);
+    const Vec2F objectSize = {spriteSize.ConvertToType<float>() * scale * SpaceConvert::PixelsPerUnit};
+    const Vec2F screenPoint = SpaceConvert::WorldToScreenPoint(position).ConvertToType<float>();
 
-    DrawTextureEx(
+    const Rectangle origin = {
+        0,
+        0,
+        spriteSize.ConvertToType<float>().x,
+        spriteSize.ConvertToType<float>().y
+    };
+
+    const Rectangle destination = {
+        screenPoint.x,
+        screenPoint.y,
+        objectSize.x,
+        objectSize.y
+    };
+
+    DrawTexturePro(
         sprite,
-        screenPoint.ToRaylibVector(),
+        origin,
+        destination,
+        (objectSize / 2).ToRaylibVector(),
         rotation,
-        scale * static_cast<float>(SpaceConvert::PixelsPerUnit),
         WHITE
     );
 }

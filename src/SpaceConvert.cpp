@@ -23,25 +23,7 @@ namespace SpaceConvert {
             -screenPoint.y + screenCenter.y
         };
 
-        const Vec2F worldPoint = {
-            static_cast<float>(centeredScreenPoint.x * PixelsPerUnit),
-            static_cast<float>(centeredScreenPoint.y * PixelsPerUnit)
-        };
-
-        return worldPoint;
-    }
-
-    Vec2I WorldToCenteredScreenPoint(const Vec2F worldPoint, const Vec2I size) {
-        const Vec2I centerOffset = -size * static_cast<int>(PixelsPerUnit) / 2;
-        const Vec2I screenPoint = WorldToScreenPoint(worldPoint) + centerOffset;
-
-        return screenPoint;
-    }
-
-    Vec2F ScreenToCenteredWorldPoint(const Vec2I screenPoint, const Vec2F size) {
-        const Vec2F decenterOffset = size * static_cast<float>(PixelsPerUnit) / 2;
-        const Vec2F worldPoint = ScreenToWorldPoint(screenPoint) + decenterOffset;
-
+        const Vec2F worldPoint = centeredScreenPoint.ConvertToType<float>() * PixelsPerUnit;
         return worldPoint;
     }
 }

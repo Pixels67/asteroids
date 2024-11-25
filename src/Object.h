@@ -16,11 +16,16 @@ public:
     virtual void Draw() = 0;
     virtual void Move(Vec2F translation);
     virtual void Rotate(float rotation);
+    virtual void Scale(float scaleFactor);
 };
 
 class Spaceship final : public Object {
 public:
     explicit Spaceship(const Texture2D &sprite);
+    Spaceship(const Spaceship &other) = delete;
+    Spaceship& operator=(const Spaceship &other) = delete;
+    Spaceship(Spaceship &&other) = delete;
+    Spaceship& operator=(Spaceship &&other) = delete;
 
     void Draw() override;
 };
