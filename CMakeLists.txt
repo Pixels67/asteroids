@@ -1,15 +1,15 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.25)
 project(asteroids)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/)
 
 set(RAYLIB_PATH ${PROJECT_SOURCE_DIR}/ext/raylib-5.5/)
 set(SOURCE_FILES src/main.cpp
-        src/Vector2.h
-        src/Object.h
-        src/Object.cpp
-        src/SpaceConvert.h
-        src/SpaceConvert.cpp
+        src/Core/Math/Vector2.h
+        src/Core/Object.h
+        src/Core/Object.cpp
+        src/Core/Math/SpaceConvert.h
+        src/Core/Math/SpaceConvert.cpp
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/src/ ${RAYLIB_PATH}/include/)

@@ -10,6 +10,8 @@ struct Vec2 {
 
     Vec2() : x(0), y(0) {}
     Vec2(T x, T y) : x(x), y(y) {}
+    explicit Vec2(T value) : x(value), y(value) {}
+
     Vec2(const Vec2& other) {
         this->x = other.x;
         this->y = other.y;
@@ -21,7 +23,6 @@ struct Vec2 {
         this->x = std::move(other.x);
         this->y = std::move(other.y);
         other.~Vec2();
-        return *this;
     }
 
     Vec2& operator=(Vec2&& other)  noexcept {
@@ -30,6 +31,10 @@ struct Vec2 {
         other.~Vec2();
         return *this;
     };
+
+    void Normalize() {
+        *this = this->Normalized();
+    }
 
 #pragma region Utility Methods
 
@@ -47,11 +52,12 @@ struct Vec2 {
     }
 
     [[nodiscard]] Vec2 Normalized() const {
+        if (Magnitude() == 0) return Vec2(0, 0);
         return Vec2(x / Magnitude(), y / Magnitude());
     }
 
     [[nodiscard]] Vector2 ToRaylibVector() const {
-        return Vector2(static_cast<float>(x), static_cast<float>(y));
+        return {static_cast<float>(x), static_cast<float>(y)};
     }
 
 #pragma endregion Utility Methods

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "raylib.h"
-#include "Vector2.h"
+#include "Core/Math/Vector2.h"
 
 class Object {
 public:
@@ -14,7 +14,7 @@ public:
     virtual ~Object() = default;
 
     virtual void Draw() = 0;
-    virtual void Move(Vec2F translation);
+    virtual void Move(const Vec2F& translation);
     virtual void Rotate(float rotation);
     virtual void Scale(float scaleFactor);
 };
@@ -28,4 +28,5 @@ public:
     Spaceship& operator=(Spaceship &&other) = delete;
 
     void Draw() override;
+    void Update();
 };
