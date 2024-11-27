@@ -5,15 +5,20 @@ int main() {
     SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(800, 600, "Asteroids");
 
-    const Texture2D sprite = LoadTexture("res/spaceship.png");
-    Spaceship spaceship(sprite);
+    Spaceship spaceship("res/spaceship.png");
+    Projectile bullet("res/projectile.png", 0);
 
     while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(BLACK);
         spaceship.Update();
+        bullet.Update();
+
+        BeginDrawing();
+
+        ClearBackground(BLACK);
+        bullet.Draw();
         spaceship.Draw();
         DrawFPS(0, 0);
+
         EndDrawing();
     }
 

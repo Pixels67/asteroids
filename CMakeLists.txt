@@ -30,5 +30,6 @@ else ()
             shell32.lib)
 endif ()
 
+file(REMOVE_RECURSE ${PROJECT_SOURCE_DIR}/bin)
 file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/bin/res)
 file(COPY ${PROJECT_SOURCE_DIR}/res/ DESTINATION ${PROJECT_SOURCE_DIR}/bin/res/)
