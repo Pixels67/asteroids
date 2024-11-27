@@ -10,6 +10,8 @@ set(SOURCE_FILES src/Main.cpp
         src/Core/Object.cpp
         src/Core/Math/SpaceConvert.h
         src/Core/Math/SpaceConvert.cpp
+        src/Core/Game.h
+        src/Core/Game.cpp
 )
 
 include_directories(${PROJECT_SOURCE_DIR}/src/ ${RAYLIB_PATH}/include/)

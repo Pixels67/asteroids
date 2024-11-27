@@ -7,12 +7,12 @@
 constexpr float SPACESHIP_SPEED = 10.0f;
 constexpr float PROJECTILE_SPEED = 10.0f;
 
-Object::Object(const std::string &spritePath, const Vec2F &position, const float rotation, const float scale)
-: position(position), rotation(rotation), scale(scale), sprite(LoadTexture(spritePath.c_str())) {}
+Object::Object(const std::string &spritePath, Vec2F position, const float rotation, const float scale)
+: position(std::move(position)), rotation(rotation), scale(scale), sprite(LoadTexture(spritePath.c_str())) {}
 
-void Object::Draw() {
+void Object::Draw() const {
     const Vec2I spriteSize = {sprite.width, sprite.height};
-    const Vec2F objectScreenSize = (spriteSize * scale).ConvertToType<float>();
+    const Vec2F objectScreenSize = spriteSize.ConvertToType<float>() * scale;
     const Vec2F screenPoint = SpaceConvert::WorldToScreenPoint(position).ConvertToType<float>();
 
     const Rectangle origin = {
@@ -52,10 +52,13 @@ void Object::Scale(const float scaleFactor) {
     this->scale *= scaleFactor;
 }
 
+Spaceship::Spaceship() : Object() {
+}
+
 Spaceship::Spaceship(const std::string &spritePath)
 : Object(spritePath) {}
 
-void Spaceship::Update() {
+void Spaceship::Tick(const float deltaTime) {
     rotation = atan2(
         SpaceConvert::WorldToScreenPoint(position).ConvertToType<float>().y - GetMousePosition().y,
         SpaceConvert::WorldToScreenPoint(position).ConvertToType<float>().x - GetMousePosition().x
@@ -68,14 +71,30 @@ void Spaceship::Update() {
 
     input.Normalize();
 
-    Move(input.ConvertToType<float>() * GetFrameTime() * SPACESHIP_SPEED);
+    Move(input.ConvertToType<float>() * deltaTime * SPACESHIP_SPEED);
+
+    if (position.x > static_cast<float>(GetScreenWidth()) / 2 / SpaceConvert::PixelsPerUnit) {
+        position.x = static_cast<float>(GetScreenWidth()) / 2 / SpaceConvert::PixelsPerUnit;
+    }
+    if (position.x < -static_cast<float>(GetScreenWidth()) / 2 / SpaceConvert::PixelsPerUnit) {
+        position.x = -static_cast<float>(GetScreenWidth()) / 2 / SpaceConvert::PixelsPerUnit;
+    }
+    if (position.y > static_cast<float>(GetScreenHeight()) / 2 / SpaceConvert::PixelsPerUnit) {
+        position.y = static_cast<float>(GetScreenHeight()) / 2 / SpaceConvert::PixelsPerUnit;
+    }
+    if (position.y < -static_cast<float>(GetScreenHeight()) / 2 / SpaceConvert::PixelsPerUnit) {
+        position.y =- static_cast<float>(GetScreenHeight()) / 2 / SpaceConvert::PixelsPerUnit;
+    }
 }
 
-Projectile::Projectile(const std::string &spritePath, const float angleDegrees)
-: Object(spritePath) {
-    direction = {cos(angleDegrees * DEG2RAD), sin(angleDegrees * DEG2RAD)};
+Projectile::Projectile(const std::string &spritePath, const Vec2F& position, float angleDegrees)
+    : Object(spritePath, position, 0.0f, 1.0f) {
+    direction = {
+        static_cast<float>(cos(angleDegrees * DEG2RAD)),
+        static_cast<float>(sin(angleDegrees * DEG2RAD))
+    };
 }
 
-void Projectile::Update() {
-    Move(direction * GetFrameTime() * PROJECTILE_SPEED);
+void Projectile::Tick(const float deltaTime) {
+    Move(direction * deltaTime * PROJECTILE_SPEED);
 }

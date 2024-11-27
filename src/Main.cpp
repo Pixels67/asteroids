@@ -1,26 +1,13 @@
-#include "raylib.h"
-#include "Core/Object.h"
+#include "Core/Game.h"
+
+constexpr int WINDOW_WIDTH = 800;
+constexpr int WINDOW_HEIGHT = 600;
+constexpr std::string TITLE= "Asteroids";
 
 int main() {
-    SetConfigFlags(FLAG_VSYNC_HINT);
-    InitWindow(800, 600, "Asteroids");
+    Game game({WINDOW_WIDTH, WINDOW_HEIGHT, TITLE});
 
-    Spaceship spaceship("res/spaceship.png");
-    Projectile bullet("res/projectile.png", 0);
-
-    while (!WindowShouldClose()) {
-        spaceship.Update();
-        bullet.Update();
-
-        BeginDrawing();
-
-        ClearBackground(BLACK);
-        bullet.Draw();
-        spaceship.Draw();
-        DrawFPS(0, 0);
-
-        EndDrawing();
+    while (game.IsRunning()) {
+        game.Update(GetFrameTime());
     }
-
-    CloseWindow();
 }
